@@ -1,0 +1,102 @@
+Vastaukset:
+a)
+
+mysql> SELECT* FROM departments;
++---------+--------------------+
+| dept_no | dept_name          |
++---------+--------------------+
+| d009    | Customer Service   |
+| d005    | Development        |
+| d002    | Finance            |
+| d003    | Human Resources    |
+| d001    | Marketing          |
+| d004    | Production         |
+| d006    | Quality Management |
+| d008    | Research           |
+| d007    | Sales              |
++---------+--------------------+
+9 rows in set (0.01 sec)
+
+b)
+
+mysql> SELECT DISTINCT title FROM titles;
++--------------------+
+| title              |
++--------------------+
+| Senior Engineer    |
+| Staff              |
+| Engineer           |
+| Senior Staff       |
+| Assistant Engineer |
+| Technique Leader   |
+| Manager            |
++--------------------+
+7 rows in set (0.40 sec)
+
+c)
+
+mysql> SELECT MAX(salary) FROM SALARIES;
++-------------+
+| MAX(salary) |
++-------------+
+|      158220 |
++-------------+
+1 row in set (0.49 sec)
+
+mysql> SELECT MIN(salary) FROM salaries;
++-------------+
+| MIN(salary) |
++-------------+
+|       38623 |
++-------------+
+1 row in set (0.61 sec)
+
+
+d)
+
+mysql> SELECT AVG(salary) FROM salaries;
++-------------+
+| AVG(salary) |
++-------------+
+|  63810.7448 |
++-------------+
+1 row in set (0.98 sec)
+
+e)
+
+mysql> SELECT * FROM employees WHERE last_name LIKE '%facello%';
++--------+------------+-------------+-----------+--------+------------+
+| emp_no | birth_date | first_name  | last_name | gender | hire_date  |
++--------+------------+-------------+-----------+--------+------------+
+|  10001 | 1953-09-02 | Georgi      | Facello   | M      | 1986-06-26 |
+|  10327 | 1954-04-01 | Roded       | Facello   | M      | 1987-09-18 |
+|  12751 | 1964-07-06 | Nahum       | Facello   | M      | 1995-01-09 |
+|  15346 | 1959-09-26 | Kirk        | Facello   | F      | 1991-12-07 |
+|  15685 | 1958-07-12 | Kasturi     | Facello   | M      | 1992-03-13 |
+
+(vastauksessa ei koko tulostusta)
+
+f)
+
+mysql> SELECT COUNT(*) FROM employees WHERE birth_date LIKE '%195%';
++----------+
+| COUNT(*) |
++----------+
+|   182886 |
++----------+
+1 row in set (0.13 sec)
+
+
+g)
+
+mysql> SELECT gender, COUNT(*) FROM employees GROUP BY gender;
++--------+----------+
+| gender | COUNT(*) |
++--------+----------+
+| M      |   179973 |
+| F      |   120051 |
++--------+----------+
+2 rows in set (0.12 sec)
+
+
+

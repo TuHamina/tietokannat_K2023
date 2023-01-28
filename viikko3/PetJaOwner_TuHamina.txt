@@ -1,0 +1,112 @@
+mysql> CREATE TABLE owner
+    -> (
+    -> first_name varchar(255),
+    -> last_name varchar(255),
+    -> address varchar(255),
+    -> ownerID int PRIMARY KEY AUTO_INCREMENT
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+
+
+mysql> ALTER TABLE pet DROP COLUMN owner;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE pet ADD COLUMN petID INT PRIMARY KEY AUTO_INCREMENT;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE pet ADD COLUMN ownerID INT;
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE pet ADD CONSTRAINT FOREIGN KEY(ownerID) REFERENCES owner(ownerID);
+Query OK, 8 rows affected (0.05 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+
+
+mysql> INSERT INTO owner VALUES ('Harold','Lloyd','Someaddress 1',NULL);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO owner VALUES ('Gwen','Stefani','Someaddress 2',NULL);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO owner VALUES ('Benny','Hill','Someaddress 3',NULL);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO owner VALUES ('Diane','Keaton','Someaddress 4',NULL);
+Query OK, 1 row affected (0.00 sec)
+
+
+
+mysql> UPDATE pet SET ownerID=1 WHERE name='Fluffy';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE pet SET ownerID=2 WHERE name='Claws';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE pet SET ownerID=1 WHERE name='Buffy';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE pet SET ownerID=3 WHERE name='Fang';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE pet SET ownerID=4 WHERE name='Bowser';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE pet SET ownerID=2 WHERE name='Chirpy';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE pet SET ownerID=2 WHERE name='Whistler';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE pet SET ownerID=3 WHERE name='Slim';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+
+mysql> INSERT INTO owner VALUES('Charlie','Chaplin',NULL,NULL);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO pet VALUES('Puffball','dog','m','2014-09-04',NULL,NULL,NULL);
+Query OK, 1 row affected (0.00 sec)
+
+
+
+mysql> DESC owner;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| first_name | varchar(255) | YES  |     | NULL    |                |
+| last_name  | varchar(255) | YES  |     | NULL    |                |
+| address    | varchar(255) | YES  |     | NULL    |                |
+| ownerID    | int          | NO   | PRI | NULL    | auto_increment |
++------------+--------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> DESC pet;
++---------+-------------+------+-----+---------+----------------+
+| Field   | Type        | Null | Key | Default | Extra          |
++---------+-------------+------+-----+---------+----------------+
+| name    | varchar(20) | YES  |     | NULL    |                |
+| species | varchar(20) | YES  |     | NULL    |                |
+| sex     | char(1)     | YES  |     | NULL    |                |
+| birth   | date        | YES  |     | NULL    |                |
+| death   | date        | YES  |     | NULL    |                |
+| petID   | int         | NO   | PRI | NULL    | auto_increment |
+| ownerID | int         | YES  | MUL | NULL    |                |
++---------+-------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+
+
