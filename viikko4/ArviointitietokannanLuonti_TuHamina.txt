@@ -1,0 +1,45 @@
+mysql> SELECT * FROM opintojakso;
++---------------+--------+---------+--------------------------+
+| idOpintojakso | Koodi  | Laajuus | Nimi                     |
++---------------+--------+---------+--------------------------+
+|             1 | T20041 |       3 | Tietokannat              |
+|             2 | T20042 |       3 | Liike-elaman tapatietous |
+|             3 | T20043 |       3 | Fysiikka 3               |
+|             4 | T20044 |       6 | Elektroniikan perusteet  |
+|             5 | T20045 |       5 | Kellarihumppa            |
+|             6 | T20046 |       3 | Matematiikka 2           |
+|             7 | T20047 |       3 | Ruotsin kieli            |
+|             8 | T20048 |       3 | VHDL-kieli               |
++---------------+--------+---------+--------------------------+
+8 rows in set (0.01 sec)
+
+mysql> SELECT * FROM Opiskelija;
++--------------+---------+----------+----------------+--------------+
+| idOpiskelija | Etunimi | Sukunimi | Osoite         | Luokkatunnus |
++--------------+---------+----------+----------------+--------------+
+|            1 | Aku     | Ankka    | Ankkalinna 313 | TTE3SNH      |
+|            2 | Roope   | Ankka    | Ankkalinna 314 | TTE3SNH      |
+|            3 | Iines   | Ankka    | Ankkalinna 315 | TTE4SNL      |
+|            4 | Mikki   | Hiiri    | Ankkalinna 316 | TTE2SNO      |
+|            5 | Hessu   | Hopo     | Ankkalinna 317 | TTE2SNO      |
++--------------+---------+----------+----------------+--------------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT etunimi,sukunimi,arvosana,paivamaara,nimi FROM Arviointi JOIN Opiskelija on Opiskelija.idOpiskelija = Arviointi.idOpiskelija JOIN Opintojakso on Opintojakso.idOpintojakso = Arviointi.idOpintojakso;
++---------+----------+----------+------------+---------------+
+| etunimi | sukunimi | arvosana | paivamaara | nimi          |
++---------+----------+----------+------------+---------------+
+| Aku     | Ankka    |        1 | 2023-01-27 | Tietokannat   |
+| Aku     | Ankka    |        1 | 2023-01-27 | Fysiikka 3    |
+| Aku     | Ankka    |        0 | 2023-01-27 | Ruotsin kieli |
+| Roope   | Ankka    |        4 | 2023-01-27 | Tietokannat   |
+| Roope   | Ankka    |        2 | 2023-01-27 | Fysiikka 3    |
+| Iines   | Ankka    |        4 | 2023-01-27 | Tietokannat   |
+| Iines   | Ankka    |        3 | 2023-01-27 | Fysiikka 3    |
+| Mikki   | Hiiri    |        5 | 2023-01-27 | Tietokannat   |
+| Mikki   | Hiiri    |        4 | 2023-01-27 | Fysiikka 3    |
+| Hessu   | Hopo     |        5 | 2023-01-27 | Fysiikka 3    |
+| Hessu   | Hopo     |        1 | 2023-01-27 | Tietokannat   |
++---------+----------+----------+------------+---------------+
+11 rows in set (0.00 sec)
+

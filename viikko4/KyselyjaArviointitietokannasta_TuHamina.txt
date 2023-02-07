@@ -1,0 +1,59 @@
+1)
+
+mysql> SELECT etunimi, sukunimi FROM opiskelija JOIN arviointi ON opiskelija.idopiskelija=arviointi.idopiskelija WHERE arvosana=0;
++---------+----------+
+| etunimi | sukunimi |
++---------+----------+
+| Aku     | Ankka    |
++---------+----------+
+1 row in set (0.00 sec)
+
+
+2)
+
+mysql> SELECT etunimi, sukunimi FROM arviointi JOIN Opiskelija on Opiskelija.idOpiskelija = Arviointi.idOpiskelija JOIN Opintojakso on Opintojakso.idOpintojakso = Arviointi.idOpintojakso WHERE arvosana>0 AND nimi='Fysiikka 3';
++---------+----------+
+| etunimi | sukunimi |
++---------+----------+
+| Aku     | Ankka    |
+| Roope   | Ankka    |
+| Iines   | Ankka    |
+| Mikki   | Hiiri    |
+| Hessu   | Hopo     |
++---------+----------+
+5 rows in set (0.00 sec)
+
+3)
+
+mysql> SELECT nimi FROM arviointi JOIN Opiskelija on Opiskelija.idOpiskelija = Arviointi.idOpiskelija JOIN Opintojakso on Opintojakso.idOpintojakso = Arviointi.idOpintojakso WHERE etunimi='Hessu';
++-------------+
+| nimi        |
++-------------+
+| Fysiikka 3  |
+| Tietokannat |
++-------------+
+2 rows in set (0.00 sec)
+
+4)
+
+mysql> SELECT AVG(arvosana) FROM opiskelija JOIN arviointi ON opiskelija.idopiskelija=arviointi.idopiskelija WHERE etunimi='Aku';
++---------------+
+| AVG(arvosana) |
++---------------+
+|        0.6667 |
++---------------+
+1 row in set (0.00 sec)
+
+5)
+
+mysql> SELECT nimi FROM opintojakso LEFT JOIN arviointi ON opintojakso.idopintojakso=arviointi.idopintojakso WHERE arvosana IS NULL;
++--------------------------+
+| nimi                     |
++--------------------------+
+| Liike-elaman tapatietous |
+| Elektroniikan perusteet  |
+| Kellarihumppa            |
+| Matematiikka 2           |
+| VHDL-kieli               |
++--------------------------+
+5 rows in set (0.00 sec)
