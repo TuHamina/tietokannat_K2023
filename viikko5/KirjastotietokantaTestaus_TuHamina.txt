@@ -1,0 +1,65 @@
+2 samaa kirjaa:
+
+mysql> INSERT INTO tekija VALUES(NULL, 'J.K.','Rowling');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO teos VALUES(NULL, 'Harry Potter ja Viisasten kivi','951-31-1146-6');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Tekija_Teos VALUES(1,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO kirja VALUES(NULL, '345N346457','1');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO kirja VALUES(NULL, '345N246869','1');
+Query OK, 1 row affected (0.00 sec)
+
+
+Kirja, jossa on useampi kuin yksi tekijä:
+
+mysql> INSERT INTO teos VALUES(NULL,'Maastokasvio','978-951-31-3835-6');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO kirja VALUES(NULL,'345N4364584','2');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO tekija VALUES(NULL, 'Bo','Mossberg');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO tekija VALUES(NULL,'Lennart','Stenberg');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO tekija_teos VALUES(2,2);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO tekija_teos VALUES(3,2);
+Query OK, 1 row affected (0.00 sec)
+
+
+mysql> SELECT * FROM tekija JOIN tekija_teos ON tekija.idTekijä=tekija_teos.idTekijä JOIN teos ON teos.idTeos=tekija_teos.idTeos JOIN kirja ON teos.idTeos=kirja.Teos_idTeos;
++-----------+---------+----------+-----------+--------+--------+--------------------------------+-------------------+---------+-------------+-------------+
+| idTekijä  | Etunimi | Sukunimi | idTekijä  | idTeos | idTeos | Nimi                           | ISBN              | idKirja | Luokitus    | Teos_idTeos |
++-----------+---------+----------+-----------+--------+--------+--------------------------------+-------------------+---------+-------------+-------------+
+|         1 | J.K.    | Rowling  |         1 |      1 |      1 | Harry Potter ja Viisasten kivi | 951-31-1146-6     |       1 | 345N346457  |           1 |
+|         1 | J.K.    | Rowling  |         1 |      1 |      1 | Harry Potter ja Viisasten kivi | 951-31-1146-6     |       2 | 345N246869  |           1 |
+|         2 | Bo      | Mossberg |         2 |      2 |      2 | Maastokasvio                   | 978-951-31-3835-6 |       3 | 345N4364584 |           2 |
+|         3 | Lennart | Stenberg |         3 |      2 |      2 | Maastokasvio                   | 978-951-31-3835-6 |       3 | 345N4364584 |           2 |
++-----------+---------+----------+-----------+--------+--------+--------------------------------+-------------------+---------+-------------+-------------+
+4 rows in set (0.00 sec)
+
+Lainaustapahtuma, jossa asiakas on lainannut kirjan ja se on vielä lainassa:
+
+mysql> INSERT INTO asiakas VALUES(NULL,'Matti','Meikäläinen','Jokukatu 12','0435236');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> INSERT INTO lainaus VALUES(NULL, '2023-02-04', '2023-02-25',NULL,1,1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT tekija.etunimi, tekija.sukunimi, nimi, ISBN, Luokitus, lainauspvm, palautuspvm, palautettu, asiakas.etunimi, asiakas.sukunimi, osoite, puhelinnumero FROM tekija JOIN tekija_teos ON tekija.idTekijä=tekija_teos.idTekijä JOIN teos ON teos.idTeos=tekija_teos.idTeos JOIN kirja ON teos.idTeos=kirja.Teos_idTeos JOIN lainaus ON lainaus.idKirja=kirja.idKirja JOIN asiakas ON asiakas.idAsiakas=lainaus.idAsiakas;
++---------+----------+--------------------------------+---------------+------------+------------+-------------+------------+---------+---------------+-------------+---------------+
+| etunimi | sukunimi | nimi                           | ISBN          | Luokitus   | lainauspvm | palautuspvm | palautettu | etunimi | sukunimi      | osoite      | puhelinnumero |
++---------+----------+--------------------------------+---------------+------------+------------+-------------+------------+---------+---------------+-------------+---------------+
+| J.K.    | Rowling  | Harry Potter ja Viisasten kivi | 951-31-1146-6 | 345N346457 | 2023-02-04 | 2023-02-25  |       NULL | Matti   | Meikäläinen   | Jokukatu 12 | 0435236       |
++---------+----------+--------------------------------+---------------+------------+------------+-------------+------------+---------+---------------+-------------+---------------+
+1 row in set (0.00 sec)

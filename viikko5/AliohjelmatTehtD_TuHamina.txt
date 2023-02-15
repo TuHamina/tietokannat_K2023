@@ -1,0 +1,154 @@
+TULOSTUKSET:
+
+mysql> CALL LisaaSuoritus('Iines','Ankka','T200123',3);
++---------------------+
+| Opintojaksoa ei ole |
++---------------------+
+| Opintojaksoa ei ole |
++---------------------+
+1 row in set (0.01 sec)
+
+
+mysql> CALL LisaaSuoritus('Iines','Ankka','T20042',6);
++---------------------------+
+| Arvosana ei välillä 0-5   |
++---------------------------+
+| Arvosana ei välillä 0-5   |
++---------------------------+
+1 row in set (0.01 sec)
+
+mysql> CALL LisaaSuoritus('Hannu','Hanhi','T20042',3);
++--------------------+
+| Opiskelijaa ei ole |
++--------------------+
+| Opiskelijaa ei ole |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> CALL LisaaSuoritus('Aku','Ankka','T20042',0);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CALL LisaaSuoritus('Roope','Ankka','T20045',3);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT etunimi, sukunimi, Arvosana, Koodi FROM Opiskelija JOIN Arviointi ON Opiskelija.idOpiskelija=Arviointi.idOpiskelija JOIN Opintojakso ON Opintojakso.idOpintojakso=Arviointi.idOpintojakso;
++---------+----------+----------+--------+
+| etunimi | sukunimi | Arvosana | Koodi  |
++---------+----------+----------+--------+
+| Aku     | Ankka    |        1 | T20041 |
+| Aku     | Ankka    |        1 | T20043 |
+| Aku     | Ankka    |        0 | T20047 |
+| Aku     | Ankka    |        0 | T20042 |
+| Roope   | Ankka    |        4 | T20041 |
+| Roope   | Ankka    |        2 | T20043 |
+| Roope   | Ankka    |        3 | T20045 |
+| Iines   | Ankka    |        4 | T20041 |
+| Iines   | Ankka    |        3 | T20043 |
+| Mikki   | Hiiri    |        5 | T20041 |
+| Mikki   | Hiiri    |        4 | T20043 |
+| Hessu   | Hopo     |        5 | T20043 |
+| Hessu   | Hopo     |        1 | T20041 |
++---------+----------+----------+--------+
+13 rows in set (0.00 sec)
+
+
+WORKBENCHILLÄ TEHTY:
+
+CREATE PROCEDURE `LisaaSuoritus` (IN En VARCHAR(45), IN Sn VARCHAR(45), IN KK VARCHAR(45), IN Arvos INT)
+Aliohjelma:BEGIN
+declare OpiskID INT DEFAULT 0;
+declare OpjaksoID INT DEFAULT 0;
+declare ArvosID INT DEFAULT 0;
+
+SELECT idOpiskelija INTO OpiskID FROM  Opiskelija WHERE Etunimi=En AND Sukunimi=Sn;
+
+IF OpiskID=0 then
+	SELECT 'Opiskelijaa ei ole';
+    LEAVE Aliohjelma;
+END IF;
+
+SELECT idOpintojakso INTO OpjaksoID FROM Opintojakso WHERE koodi=kk;
+
+IF OpjaksoID=0 then
+	SELECT 'Opintojaksoa ei ole';
+    LEAVE Aliohjelma;
+END IF;
+
+SELECT idArviointi INTO ArvosID FROM Arviointi WHERE Arvosana=Arvos;
+
+IF Arvos>5 OR Arvos<0 then
+	SELECT 'Arvosana ei välillä 0-5';
+    LEAVE Aliohjelma;
+END IF;
+
+INSERT INTO Arviointi VALUES(NULL,CURDATE(),Arvos,OpiskID,OpjaksoID);
+
+END
+
+
+
+
+
+
+
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema teht_db
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema teht_db
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `teht_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `teht_db` ;
+USE `teht_db` ;
+
+-- -----------------------------------------------------
+-- procedure LisaaSuoritus
+-- -----------------------------------------------------
+
+DELIMITER $$
+USE `teht_db`$$
+CREATE PROCEDURE `LisaaSuoritus` (IN En VARCHAR(45), IN Sn VARCHAR(45), IN KK VARCHAR(45), IN Arvos INT)
+Aliohjelma:BEGIN
+declare OpiskID INT DEFAULT 0;
+declare OpjaksoID INT DEFAULT 0;
+declare ArvosID INT DEFAULT 0;
+
+SELECT idOpiskelija INTO OpiskID FROM  Opiskelija WHERE Etunimi=En AND Sukunimi=Sn;
+
+IF OpiskID=0 then
+	SELECT 'Opiskelijaa ei ole';
+    LEAVE Aliohjelma;
+END IF;
+
+SELECT idOpintojakso INTO OpjaksoID FROM Opintojakso WHERE koodi=kk;
+
+IF OpjaksoID=0 then
+	SELECT 'Opintojaksoa ei ole';
+    LEAVE Aliohjelma;
+END IF;
+
+SELECT idArviointi INTO ArvosID FROM Arviointi WHERE Arvosana=Arvos;
+
+IF Arvos>5 OR Arvos<0 then
+	SELECT 'Arvosana ei välillä 0-5';
+    LEAVE Aliohjelma;
+END IF;
+
+INSERT INTO Arviointi VALUES(NULL,CURDATE(),Arvos,OpiskID,OpjaksoID);
+
+END$$
+
+DELIMITER ;
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
